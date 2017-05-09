@@ -9,13 +9,13 @@ import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
-public class LongEventMain {
+public class EventMain {
 
 	public static void main(String[] args) throws Exception {
 		//创建缓冲池
 		ExecutorService  executor = Executors.newCachedThreadPool();
 		//创建工厂
-		LongEventFactory factory = new LongEventFactory();
+		EventFactory factory = new EventFactory();
 		//创建bufferSize ,也就是RingBuffer大小，必须是2的N次方
 		int ringBufferSize = 1024 * 1024; // 
 
@@ -34,19 +34,19 @@ public class LongEventMain {
 		// 3 第三个参数 线程池 用于disruptor内部调度使用
 		// 4 第四个参数 SINGLE生产者为一个，MULTI表示多个生产者
 		// 5 第五个参数 在多消费少生产或者多生产少消费的情况下，框架的策略
-		Disruptor<LongEvent> disruptor = 
-				new Disruptor<LongEvent>(factory, ringBufferSize, executor, ProducerType.SINGLE, new YieldingWaitStrategy());
+		Disruptor<Event> disruptor =
+				new Disruptor<Event>(factory, ringBufferSize, executor, ProducerType.SINGLE, new YieldingWaitStrategy());
 
 		// 连接消费事件方法（注册消费者）
-		disruptor.handleEventsWith(new LongEventHandler());
+		disruptor.handleEventsWith(new EventConsumer());
 
 		// 启动
 		disruptor.start();
 		
 		//Disruptor 的事件发布过程是一个两阶段提交的过程：
 		//获取disruptor的缓存容器
-		RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
-		LongEventProducer producer = new LongEventProducer(ringBuffer); 
+		RingBuffer<Event> ringBuffer = disruptor.getRingBuffer();
+		EventProducer producer = new EventProducer(ringBuffer);
 		//LongEventProducerWithTranslator producer = new LongEventProducerWithTranslator(ringBuffer);
 		ByteBuffer byteBuffer = ByteBuffer.allocate(8);
 		for(long l = 0; l<100; l++){

@@ -15,21 +15,21 @@ import com.lmax.disruptor.RingBuffer;
  * @author 北京尚学堂（alienware）
  * @since 2015年11月23日
  */
-public class LongEventProducerWithTranslator {
+public class EventProducerWithTranslator {
 
 	//一个translator可以看做一个事件初始化器，publicEvent方法会调用它
 	//填充Event
-	private static final EventTranslatorOneArg<LongEvent, ByteBuffer> TRANSLATOR = 
-			new EventTranslatorOneArg<LongEvent, ByteBuffer>() {
+	private static final EventTranslatorOneArg<Event, ByteBuffer> TRANSLATOR =
+			new EventTranslatorOneArg<Event, ByteBuffer>() {
 				@Override
-				public void translateTo(LongEvent event, long sequeue, ByteBuffer buffer) {
+				public void translateTo(Event event, long sequeue, ByteBuffer buffer) {
 					event.setValue(buffer.getLong(0));
 				}
 			};
 	
-	private final RingBuffer<LongEvent> ringBuffer;
+	private final RingBuffer<Event> ringBuffer;
 	
-	public LongEventProducerWithTranslator(RingBuffer<LongEvent> ringBuffer) {
+	public EventProducerWithTranslator(RingBuffer<Event> ringBuffer) {
 		this.ringBuffer = ringBuffer;
 	}
 	

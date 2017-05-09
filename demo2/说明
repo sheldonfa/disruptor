@@ -1,0 +1,5 @@
+demo2       不用disruptor实例，其他实现方式EventProcessor、WorkerPool
+
+技术点：
+1、EventProcessor 实现方式
+2、WorkerPool 实现方式

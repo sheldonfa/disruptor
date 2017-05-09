@@ -1,0 +1,11 @@
+demo1       hello world
+
+技术点：
+1、disruptor关键类介绍
+    单元数据        Event，     就是要处理的数据                         用户自定义
+    数据工厂        EventFactory disruptor需要自己创建数据实例，          实现EventFactory接口即可
+
+    消费者          EventConsumer，用于消费事件，                        需要实现EventHandler接口
+    生产者          EventProducer                                     用户自定义，需要组合RingBuffer来放入数据
+
+2、producer的一种简便写法，回调方式

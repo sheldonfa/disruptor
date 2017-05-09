@@ -6,7 +6,7 @@ package com;
  * 自定义数据单元
  * 用户自定义
  */
-public class LongEvent { 
+public class Event {
     private long value;
     public long getValue() { 
         return value; 
